@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip_test/model/common_model.dart';
 import 'package:flutter_trip_test/model/grid_nav_model.dart';
+import 'package:flutter_trip_test/widget/webview.dart';
 
 class LocalNav extends StatelessWidget {
   final List<CommonModel> localNavList;
@@ -40,7 +41,14 @@ class LocalNav extends StatelessWidget {
   Widget _item(BuildContext context,CommonModel model){
     return GestureDetector(
       onTap: (){
-          print(model.url);
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => WebView(
+              url: model.url,
+              statusBarColor: model.statusBarColor,
+              hideAppBar: model.hideAppBar,
+              title: model.title,
+            )
+        ));
       },
       child: Column(
         children: <Widget>[

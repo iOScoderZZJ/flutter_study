@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_trip_test/dao/home_dao.dart';
 import 'package:flutter_trip_test/model/common_model.dart';
+import 'package:flutter_trip_test/model/grid_nav_model.dart';
 import 'dart:convert';
 
 import 'package:flutter_trip_test/model/home_model.dart';
+import 'package:flutter_trip_test/widget/grid_nav.dart';
 import 'package:flutter_trip_test/widget/local_nav.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
@@ -57,6 +59,7 @@ class _HomePageState extends State<HomePage> {
 
   String resultString = '';
   List<CommonModel> localNavList = [];
+  GridNavModel gridNavModel;
 
   @override
   void initState() {
@@ -70,6 +73,7 @@ class _HomePageState extends State<HomePage> {
       HomeModel model = await HomeDao.fetch();
       setState(() {
         localNavList = model.localNavList;
+        gridNavModel = model.gridNav;
       });
     }catch(e){
       print(e);
@@ -79,7 +83,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           //默认ListView上面会有一个空白padding,可以用MediaQuery包裹并且移除掉
@@ -102,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                       child: Swiper(
                         itemCount: _imageUrls.length,
                         autoplay: true,
+                        duration:1000,
                         itemBuilder: (BuildContext context,int index){
                           return Image.network(
                             _imageUrls[index],
@@ -118,6 +123,10 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                         padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
                         child: LocalNav(localNavList: localNavList),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                      child: GridNav(gridNavModel: gridNavModel,),
                     ),
                     Container(
                       height: 800,

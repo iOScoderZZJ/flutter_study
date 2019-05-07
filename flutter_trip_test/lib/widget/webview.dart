@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+const CATCH_URLS = ['m.ctrip.com/','m.ctrip.com/html5/','m.ctrip.com/html5'];
 
 class WebView extends StatefulWidget {
   final String url;
@@ -16,7 +17,7 @@ class WebView extends StatefulWidget {
       this.statusBarColor,
       this.title,
       this.hideAppBar,
-      this.backForbid})
+      this.backForbid = false})
       : super(key: key);
 
   @override
@@ -29,6 +30,7 @@ class _WebViewState extends State<WebView> {
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   StreamSubscription<WebViewHttpError> _onHttpError;
+  bool exiting = false;
 
   @override
   void initState() {
@@ -40,7 +42,14 @@ class _WebViewState extends State<WebView> {
     webviewReference.onStateChanged.listen((WebViewStateChanged state){
       switch(state.type){
         case WebViewState.startLoad:
-
+          if(_isToMain(state.url) && !exiting){
+            if(widget.backForbid){
+              webviewReference.launch(widget.url);
+            }else{
+              Navigator.pop(context);
+              exiting = true;
+            }
+          }
           break;
         default:
           break;
@@ -51,13 +60,24 @@ class _WebViewState extends State<WebView> {
     });
   }
 
+  _isToMain(String url){
+    bool contain = false;
+    for(final value in CATCH_URLS){
+      if(url?.endsWith(value) ?? false){
+        contain = true;
+        break;
+      }
+    }
+    return contain;
+  }
+
   @override
   void dispose() {
-    super.dispose();
     _onUrlChanged.cancel();
     _onStateChanged.cancel();
     _onHttpError.cancel();
     webviewReference.dispose();
+    super.dispose();
   }
 
   @override
@@ -101,6 +121,8 @@ class _WebViewState extends State<WebView> {
       );
     }
     return Container(
+      color: backgroundColor,
+      padding: EdgeInsets.only(top: 40,bottom: 10),
       ///FractionallySizedBox  可以达到充满效果
       child: FractionallySizedBox(
         widthFactor: 1,
@@ -108,7 +130,7 @@ class _WebViewState extends State<WebView> {
           children: <Widget>[
             GestureDetector(
               onTap: (){
-
+                Navigator.pop(context);
               },
               child: Container(
                 margin: EdgeInsets.only(left: 10,),
@@ -120,12 +142,14 @@ class _WebViewState extends State<WebView> {
               ),
             ),
             Positioned(
-                left: 0,
-                right: 0,
-                child:Text(
-                  widget.title??'',
-                  style: TextStyle(color: backButtonColor,fontSize: 20),
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Text(
+                  widget.title ?? '',
+                  style: TextStyle(color: backButtonColor, fontSize: 20),
                 ),
+              ),
             )
           ],
         ),
