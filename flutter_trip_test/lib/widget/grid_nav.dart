@@ -4,6 +4,7 @@ import 'package:flutter_trip_test/model/common_model.dart';
 import 'package:flutter_trip_test/model/grid_nav_model.dart';
 import 'package:flutter_trip_test/widget/webview.dart';
 
+///中间导航入口
 class GridNav extends StatelessWidget {
   final GridNavModel gridNavModel;
 

@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_trip_test/model/common_model.dart';
-import 'package:flutter_trip_test/model/grid_nav_model.dart';
 import 'package:flutter_trip_test/widget/webview.dart';
 
+///5个按钮入口
 class LocalNav extends StatelessWidget {
   final List<CommonModel> localNavList;
 
