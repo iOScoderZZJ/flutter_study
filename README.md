@@ -7,9 +7,6 @@
 - 课程中所用到的demo查看[demo](https://git.imooc.com/coding-321/flutter_trip/src/master/demo);
 - 课程源码，可通过git查看课程各章节的源码；
 
-## 课程辅导答疑
-
-[http://coding.imooc.com/learn/qa/321.html](http://coding.imooc.com/learn/qa/321.html)
 
 ## 如何运行？
 
@@ -20,3 +17,5 @@
 ## 接口文档
 
 - [首页大接口文档](https://git.imooc.com/coding-321/flutter_trip/src/master/doc/首页大接口文档.md)
+-
+    [搜索接口](https://git.imooc.com/coding-321/flutter_trip/src/master/doc/搜索接口文档.md)
