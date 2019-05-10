@@ -3,6 +3,9 @@
 class SearchModel{
   final List<SearchItem> data;
 
+  ///辅助字段 类似iOS中的一些辅助字段
+  String keyword;
+
   SearchModel({this.data});
 
   factory SearchModel.fromjson(Map<String, dynamic> json){

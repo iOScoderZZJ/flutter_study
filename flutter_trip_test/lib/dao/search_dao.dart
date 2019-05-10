@@ -4,12 +4,14 @@ import 'dart:convert';
 import 'dart:async';
 
 class SearchDao {
-  static Future<SearchModel> fetch(String url) async {
+  static Future<SearchModel> fetch(String url,String text) async {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
       var result = json.decode(utf8decoder.convert(response.bodyBytes));
-      return SearchModel.fromjson(result);
+      SearchModel model = SearchModel.fromjson(result);
+      model.keyword = text;
+      return model;
     } else {
       throw Exception('Failed to load home_page.json');
     }

@@ -60,7 +60,6 @@ class _SearchBarState extends State<SearchBar> {
         children: <Widget>[
           _wrapTap(
               Container(
-                color: Colors.red,
                 padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                 child: widget?.hideLeft ?? false ? null : Icon(
                   Icons.arrow_back_ios, color: Colors.grey, size: 26,),
