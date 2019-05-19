@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import 'package:flutter_trip_test/model/home_model.dart';
 import 'package:flutter_trip_test/model/sales_box_model.dart';
+import 'package:flutter_trip_test/pages/search_page.dart';
 import 'package:flutter_trip_test/widget/grid_nav.dart';
 import 'package:flutter_trip_test/widget/local_nav.dart';
 import 'package:flutter_trip_test/widget/search_bar.dart';
@@ -206,8 +207,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _jumpToSearch(){
-
+  _jumpToSearch() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return SearchPage(
+        hint: SEARCH_BAR_DEFAULT_TEXT,
+      );
+    }
+    ));
   }
 
   _jumpToSpeak(){

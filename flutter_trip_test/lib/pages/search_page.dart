@@ -2,6 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_trip_test/model/search_model.dart';
 import 'package:flutter_trip_test/widget/search_bar.dart';
 import 'package:flutter_trip_test/dao/search_dao.dart';
+import 'package:flutter_trip_test/widget/webview.dart';
+
+const TYPES = [
+  'channelgroup',
+  'gs',
+  'plane',
+  'train',
+  'cruise',
+  'district',
+  'food',
+  'hotel',
+  'huodong',
+  'shop',
+  'sight',
+  'ticket',
+  'travelgroup'
+];
 
 const URL = 'https://m.ctrip.com/restapi/h5api/searchapp/search?source=mobileweb&action=autocomplete&contentType=json&keyword=';
 class SearchPage extends StatefulWidget {
@@ -99,6 +116,56 @@ class _SearchPageState extends State<SearchPage> {
   _item(int positon){
     if(searchModel == null || searchModel.data == null) return null;
     SearchItem item = searchModel.data[positon];
-    return Text(item.word);
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) =>
+                WebView(
+                  url: item.url,
+                  title: '详情',
+                )
+        ));
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 0.3, color: Colors.grey))
+        ),
+        child: Row(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(1),
+              width: 26,
+              height: 26,
+              child: Image(image: AssetImage(_typeImage(item.type))),
+            ),
+            Column(
+              children: <Widget>[
+                Container(
+                  width: 300,
+                  child: Text('${item.word} ${item.districtname??''} ${item.zonename??''}'),
+                ),
+                Container(
+                  width: 300,
+                  child: Text('${item.price??''} ${item.type??''}'),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _typeImage(String type) {
+    if (type == null) return 'images/type_travelgroup.png';
+    String path = 'travelgroup';
+    for (final val in TYPES) {
+      if (type.contains(val)) {
+        path = val;
+        break;
+      }
+    }
+    return 'images/type_$path.png';
   }
 }
