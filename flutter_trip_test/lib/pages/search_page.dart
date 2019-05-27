@@ -143,11 +143,12 @@ class _SearchPageState extends State<SearchPage> {
               children: <Widget>[
                 Container(
                   width: 300,
-                  child: Text('${item.word} ${item.districtname??''} ${item.zonename??''}'),
+                  child: _title(item),
                 ),
                 Container(
                   width: 300,
-                  child: Text('${item.price??''} ${item.type??''}'),
+                  margin: EdgeInsets.only(top: 5),
+                  child: _subTitle(item),
                 )
               ],
             )
@@ -167,5 +168,56 @@ class _SearchPageState extends State<SearchPage> {
       }
     }
     return 'images/type_$path.png';
+  }
+
+  _title(SearchItem item){
+    if(item == null){
+      return null;
+    }
+    List<TextSpan> spans = [];
+    spans.addAll(_keywordTextSpans(item.word,searchModel.keyword));
+    spans.add(TextSpan(
+        text: ' ' + (item.districtname??'') + ' ' + (item.zonename??''),
+        style: TextStyle(fontSize: 16,color: Colors.grey))
+    );
+    return RichText(text: TextSpan(children: spans));
+  }
+
+  _subTitle(SearchItem item){
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: item.price ?? '',
+            style: TextStyle(fontSize: 16,color: Colors.orange)
+          ),
+          TextSpan(
+              text: ' ' + (item.star ?? ''),
+              style: TextStyle(fontSize: 12,color: Colors.grey)
+          )
+        ]
+      ),
+    );
+  }
+
+  ///实现富文本
+  _keywordTextSpans(String word,String keyword){
+    List<TextSpan> spans = [];
+    if(word == null||word.length == 0) return spans;
+    ///同过keyword进行拆分
+    List<String> arr = word.split(keyword);
+    TextStyle normalStyle = TextStyle(fontSize: 16,color: Colors.black87);
+    TextStyle keywordStyle = TextStyle(fontSize: 16,color: Colors.orange);
+    for(int i = 0;i<arr.length;i++){
+      if((i+1)%2 == 0){
+        spans.add(TextSpan(text: keyword,style: keywordStyle));
+      }
+
+      String val = arr[i];
+      if(val != null && val.length >0){
+        spans.add(TextSpan(text: val,style: normalStyle));
+      }
+    }
+    return spans;
   }
 }
